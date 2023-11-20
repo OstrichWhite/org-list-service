@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
+const bcrypt = require("bcryptjs");
+
 const userSchema = mongoose.Schema({
   name: {
     type: String,
@@ -33,12 +35,20 @@ const userSchema = mongoose.Schema({
       message: "Password must be same.",
     },
   },
-  active: {
-    type: Boolean,
-    default: true,
-    select: false,
-  },
 });
+
+userSchema.pre("save", async function (next) {
+  this.password = await bcrypt.hash(this.password, 12);
+  this.passwordConfirm = undefined; //dont need to store in DB just for verification
+  next();
+});
+
+userSchema.methods.isSamePassword = async function (
+  inputPassword,
+  userPassword
+) {
+  return await bcrypt.compare(inputPassword, userPassword);
+};
 
 const User = mongoose.model("User", userSchema);
 module.exports = User;
