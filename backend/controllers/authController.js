@@ -1,6 +1,39 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const passport = require("passport");
+const JwtStrategy = require("passport-jwt").Strategy;
+const ExtractJwt = require("passport-jwt").ExtractJwt;
 
+const cookieExtractor = (request) => {
+  if (request && request.cookies) {
+    return request.cookies["jwt"];
+  }
+  return null;
+};
+const jwtOptions = {
+  jwtFromRequest: ExtractJwt.fromExtractors([
+    ExtractJwt.fromAuthHeaderAsBearerToken(),
+    cookieExtractor,
+  ]),
+  secretOrKey: process.env.JWT_SECRET,
+};
+passport.use(
+  new JwtStrategy(jwtOptions, async (payload, done) => {
+    try {
+      const currentUser = await User.findById(payload.id);
+      if (!currentUser) {
+        return done(
+          new Error("The user belonging to this token does not exist."),
+          false
+        );
+      }
+
+      return done(null, currentUser);
+    } catch (error) {
+      return done(error, false);
+    }
+  })
+);
 const signToken = (id) =>
   jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
@@ -53,11 +86,12 @@ exports.login = async (req, res, next) => {
   createSendToken(user, 200, res);
 };
 
-exports.protect = async (req, res, next) => {};
+exports.protect = () => passport.authenticate("jwt", { session: false });
 
 exports.restrictTo =
   (...roles) =>
   (req, res, next) => {
+    console.log({ roles, role: req.user.role });
     if (!roles.includes(req.user.role)) {
       return res
         .status(403)
