@@ -92,7 +92,6 @@ exports.protect = () => passport.authenticate("jwt", { session: false });
 exports.restrictTo =
   (...roles) =>
   (req, res, next) => {
-    console.log({ roles, role: req.user.role });
     if (!roles.includes(req.user.role)) {
       return res
         .status(403)
