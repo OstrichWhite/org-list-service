@@ -9,7 +9,7 @@ const organizationSchema = mongoose.Schema({
   employees: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Users",
     },
   ],
 });
