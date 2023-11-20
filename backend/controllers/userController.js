@@ -1,13 +1,14 @@
 const User = require("../models/User");
+const factory = require("./handlerFactory");
 
-exports.getAllUsers = async (req, res) => {
-  const doc = await User.find();
+exports.list = factory.list(User);
+exports.read = factory.read(User);
+exports.update = factory.update(User);
+exports.remove = factory.remove(User);
 
-  res.status(200).json({
-    status: "success",
-    results: doc.length,
-    data: {
-      data: doc,
-    },
+exports.create = (req, res) => {
+  res.status(500).json({
+    status: "error",
+    message: "This route is not defined please use /signup instead",
   });
 };
