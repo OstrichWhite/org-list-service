@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const passport = require("passport");
+const { catchAsyncErr } = require("../helpers");
 const JwtStrategy = require("passport-jwt").Strategy;
 const ExtractJwt = require("passport-jwt").ExtractJwt;
 
@@ -60,7 +61,7 @@ const createSendToken = (user, statusCode, res) => {
   });
 };
 
-exports.signUp = async (req, res, next) => {
+exports.signUp = catchAsyncErr(async (req, res, next) => {
   const newUser = await User.create({
     name: req.body.name,
     email: req.body.email,
@@ -69,9 +70,9 @@ exports.signUp = async (req, res, next) => {
     passwordConfirm: req.body.passwordConfirm,
   });
   createSendToken(newUser, 201, res);
-};
+});
 
-exports.login = async (req, res, next) => {
+exports.login = catchAsyncErr(async (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -84,7 +85,7 @@ exports.login = async (req, res, next) => {
     return res.status(401).json("Incorrect Email or Password");
   }
   createSendToken(user, 200, res);
-};
+});
 
 exports.protect = () => passport.authenticate("jwt", { session: false });
 
