@@ -1,7 +1,9 @@
 const { catchAsyncErr } = require("../helpers");
-exports.list = (Model) =>
+exports.list = (Model, popOptions) =>
   catchAsyncErr(async (req, res) => {
-    const doc = await Model.find();
+    let query = Model.find();
+    if (popOptions) query = query.populate(popOptions);
+    const doc = await query;
 
     res.status(200).json({
       status: "success",
