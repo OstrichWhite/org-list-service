@@ -5,10 +5,13 @@ const { protect, restrictTo } = require("../../controllers/authController");
 
 const setupRouter = ({ app }) => {
   app.use("/api/v1/auth", authRouter);
-  app.use(protect());
-  app.use("/api/v1/users", userRouter);
-  app.use(restrictTo("admin"));
-  app.use("/api/v1/organizations", organizationRouter);
+  app.use("/api/v1/users", protect(), userRouter);
+  app.use(
+    "/api/v1/organizations",
+    protect(),
+    restrictTo("admin"),
+    organizationRouter
+  );
 
   app.all("*", (req, res) => {
     res.status(404).json({

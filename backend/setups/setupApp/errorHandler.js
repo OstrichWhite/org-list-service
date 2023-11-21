@@ -3,7 +3,7 @@ const errorHandler = ({ app }) => {
     console.error(err.stack);
 
     // Handle other types of errors
-    res.status(500).json({ error: "Something went wrong!" });
+    res.status(500).json({ status: "error", message: "Something went wrong!" });
   });
 };
 
