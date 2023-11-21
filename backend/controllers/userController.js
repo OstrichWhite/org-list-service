@@ -12,3 +12,8 @@ exports.create = (req, res) => {
     message: "This route is not defined please use /signup instead",
   });
 };
+
+exports.getMe = (req, res, next) => {
+  req.params.id = req.user.id;
+  next();
+};
