@@ -87,7 +87,7 @@ exports.login = catchAsyncErr(async (req, res, next) => {
   createSendToken(user, 200, res);
 });
 
-exports.protect = () => passport.authenticate("jwt", { session: false });
+exports.protect = () => passport.authenticate("jwt", { session: false, failureRedirect: `${process.env.BASE_URL}/login` });
 
 exports.restrictTo =
   (...roles) =>
