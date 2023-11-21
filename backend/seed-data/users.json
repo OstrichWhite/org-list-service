@@ -1,0 +1,42 @@
+[
+  {
+    "_id": "60aaf0c3e3b872001c0c4c1a",
+    "name": "John Doe",
+    "role": "user",
+    "email": "john.doe@example.com",
+    "password": "securePassword",
+    "passwordConfirm": "securePassword"
+  },
+  {
+    "_id": "60aaf0c3e3b872001c0c4c1b",
+    "name": "Jane Smith",
+    "role": "admin",
+    "email": "jane.smith@example.com",
+    "password": "strongPassword",
+    "passwordConfirm": "strongPassword"
+  },
+  {
+    "_id": "60aaf0c3e3b872001c0c4c1c",
+    "name": "Alice Johnson",
+    "role": "user",
+    "email": "alice.johnson@example.com",
+    "password": "password123",
+    "passwordConfirm": "password123"
+  },
+  {
+    "_id": "60aaf0c3e3b872001c0c4c1d",
+    "name": "Bob Anderson",
+    "role": "user",
+    "email": "bob.anderson@example.com",
+    "password": "secret123",
+    "passwordConfirm": "secret123"
+  },
+  {
+    "_id": "60aaf0c3e3b872001c0c4c1e",
+    "name": "Admin User",
+    "role": "admin",
+    "email": "admin@example.com",
+    "password": "adminPassword",
+    "passwordConfirm": "adminPassword"
+  }
+]
