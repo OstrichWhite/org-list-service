@@ -16,7 +16,7 @@ const SignIn = () => {
         style={inputBoxStyle}
         onChange={({ target: { value } }) => {
           setEmail(value);
-          setErr(false)
+          setErr(false);
         }}
       />
       <Input
@@ -24,8 +24,7 @@ const SignIn = () => {
         style={inputBoxStyle}
         onChange={({ target: { value } }) => {
           setPassword(value);
-          setErr(false)
-
+          setErr(false);
         }}
       />
       <Button
@@ -38,15 +37,23 @@ const SignIn = () => {
             if (password === "") {
               setErr(true);
             }
-            console.log(email, password, );
-            setEmail("");
-            setPassword("");
+            const data = { email, password };
+            fetch("http://localhost:1234/api/v1/auth/login", {
+              method: "POST",
+              credentials: "include",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(data),
+            })
+              .then((response) => response.json())
+              .then((res) => (window.location.href = "/"));
           },
         }}
       />
       {err && <div style={{ color: "red" }}> Fill all the above details</div>}
       <div>
-        <a href="#" style={{ textDecoration: "none" }}>
+        <a href="/signup" style={{ textDecoration: "none" }}>
           Create a new account
         </a>
       </div>

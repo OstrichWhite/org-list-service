@@ -7,7 +7,7 @@ const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const [confirmPass, setConfirmPass] = useState("");
+  const [passwordConfirm, setConfirmPass] = useState("");
   const [err, setErr] = useState(false);
   return (
     <div className="sign-up">
@@ -45,7 +45,29 @@ const SignUp = () => {
         }}
       />
       {err && <div style={{ color: "red" }}> Fill all the above details</div>}
-      <Button {...{ text: "Sign up", onClick: () => {} }} />
+      <Button
+        {...{
+          text: "Sign up",
+          onClick: () => {
+            const data = { name, email, password, passwordConfirm };
+            fetch("http://localhost:1234/api/v1/auth/signup", {
+              method: "POST",
+              credentials: "include",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(data),
+            })
+              .then((response) => response.json())
+              .then((res) => (window.location.href = "/"));
+          },
+        }}
+      />
+      <div>
+        <a href="/login" style={{ textDecoration: "none" }}>
+          Already Login
+        </a>
+      </div>
     </div>
   );
 };
